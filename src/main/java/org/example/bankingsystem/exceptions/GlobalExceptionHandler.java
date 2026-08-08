@@ -22,6 +22,13 @@ public class GlobalExceptionHandler {
         });
         return exceptions;
     }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public Map<String , String> handleException(Exception e){
+        Map<String,String> exceptions = new HashMap<>();
+        exceptions.put("error" , "Something went wrong!");
+        return exceptions;
+    }
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String , String> handleUserNotFoundException(UserNotFoundException e){
@@ -32,6 +39,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidPasswordException.class)
     public Map<String , String> handleInvalidPasswordException(InvalidPasswordException e){
+        Map<String,String> exceptions = new HashMap<>();
+        exceptions.put("error" , e.getMessage());
+        return exceptions;
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(AccountNotFoundException.class)
+    public Map<String , String> handleAccountNotFoundException(AccountNotFoundException e){
         Map<String,String> exceptions = new HashMap<>();
         exceptions.put("error" , e.getMessage());
         return exceptions;

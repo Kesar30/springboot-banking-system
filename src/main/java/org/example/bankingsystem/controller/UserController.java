@@ -1,7 +1,6 @@
 package org.example.bankingsystem.controller;
 
 import jakarta.validation.Valid;
-import org.example.bankingsystem.exceptions.UserNotFoundException;
 import org.example.bankingsystem.requests.LoginRequest;
 import org.example.bankingsystem.requests.UserRequest;
 import org.example.bankingsystem.services.UserService;
@@ -19,15 +18,8 @@ public class UserController {
     //post method to add user
     @PostMapping("/users")
     public ResponseEntity<User> add(@Valid @RequestBody UserRequest request){
-        User u = null;
-        try {
-            u = userService.addUser(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(u);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+            User user = userService.addUser(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     //get method to show user data by id
     @PostMapping("/users/login")
@@ -51,24 +43,15 @@ public class UserController {
     //update user detail
     @PutMapping("/users/{id}")
     public ResponseEntity<User> update(@Valid @RequestBody UserRequest request,@PathVariable("id") Integer uid ){
-        try{
             User updatedUser = userService.updateUser(request, uid);
             return  ResponseEntity.ok().body(updatedUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
     }
     //delete user data
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer uid){
-        try{
             userService.deleteUser(uid);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
     }
 
 
